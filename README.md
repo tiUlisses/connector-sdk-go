@@ -12,7 +12,7 @@ SDK base para construir conectores em Go.
 - Logging estruturado via `log/slog`.
 - Configuração via variáveis de ambiente.
 - Diretório `template/minimal` com conector mínimo compilável.
-- GitHub Actions CI com test, lint, build e docker build.
+- GitHub Actions CI com checks de formatação, testes, lint e publicação opcional da imagem builder no GHCR.
 
 ## Instalação
 
@@ -68,7 +68,5 @@ go run .
 
 Pipeline em `.github/workflows/ci.yml` executa:
 
-1. `go test ./...`
-2. `golangci-lint`
-3. `go build ./...`
-4. `docker build .`
+- Em `pull_request`: validação de formatação (`gofmt -l`), `go test ./...` e `golangci-lint`.
+- Em `push` para `main`: os mesmos checks e, se existir `Dockerfile`, publica a imagem `ghcr.io/<owner>/connector-sdk-builder` com as tags `:main` e `:sha`.
